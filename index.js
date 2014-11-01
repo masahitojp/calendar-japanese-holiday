@@ -274,7 +274,7 @@ function get_furikae_days (year, mon, holidays_tbl) {
     return days;
 }
 
-function get_holidays (year, mon, furikae) {
+function getHolidays (year, mon, furikae) {
 
     var holiday_tbl = lookup_holiday_table(year);
 
@@ -316,10 +316,11 @@ function get_holidays (year, mon, furikae) {
     // 国民の休日
     if (year >= 1986) {
 	// 祝日に挟まれた平日を探す (祝日A - 平日B - 祝日C)
-	for (var day in holidays) {
+	for (var s_day in holidays) {
+	    var day = Number(s_day)
 	    if ( holidays[day + 2] &&
 		 !holidays[day + 1]) {
-		var wday = (new Date(year, mon -1, h_day)).getDay();
+		var wday = (new Date(year, (mon - 1), day)).getDay();
 
 		// 祝日Aの時は平日Bはただの振り替え休日
 		if (wday === 0) next;
@@ -343,22 +344,24 @@ function get_holidays (year, mon, furikae) {
     return holidays;
 }
 
+// For isHokyday
 var cache_holidays_Year  = 0;
 var cache_holidays_Month = 0;
 var cache_holidays;
+
 function isHoliday (year, mon, day, furikae) {
     var holidays;
 
-    if (year == $Cache_holidays_Year &&
-	mon  == $Cache_holidays_Month) {
-	holidays = $Cache_holidays;	// From Cache
+    if (year == cache_holidays_Year &&
+	mon  == cache_holidays_Month) {
+	holidays = cache_holidays;	// From Cache
     } else {
 	holidays = getHolidays(year, mon, true);
 	if(!holidays) return holidays;
 	// Cache
-	$Cache_holidays = holidays;
-	$Cache_holidays_Year  = year;
-	$Cache_holidays_Month = mon;
+	cache_holidays = holidays;
+	cache_holidays_Year  = year;
+	cache_holidays_Month = mon;
     }
     if(!holidays.hasOwnProperty(day)) return false;
     if (!furikae && holidays[day] === furikaeStr) return false;
