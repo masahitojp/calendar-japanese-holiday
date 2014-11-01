@@ -1,0 +1,14 @@
+{
+  "name": "calender-japanese-holiday",
+  "version": "0.0.1",
+  "description": "porting to Calendar::Japanese::Holiday",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "keywords": [
+    "holiday"
+  ],
+  "author": "masahitojp",
+  "license": "MIT"
+}
